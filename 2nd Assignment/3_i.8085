@@ -1,0 +1,21 @@
+START:		LDA 2000H		
+		MVI C,80H  
+		MVI D,08H  
+
+REPEAT:		RLC	
+		JC OUT   
+		MOV B,A	
+		MOV A,C	
+		INR A
+		RRC		
+		MOV C,A
+		MOV A,B	
+		DCR D   		
+		JZ OUT		
+		JMP REPEAT	
+
+OUT:	MOV A,C	
+		CMA
+		STA 3000H	
+		JMP START	
+END

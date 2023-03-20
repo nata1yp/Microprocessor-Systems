@@ -1,0 +1,52 @@
+IN 10H  		
+LXI H,0900H 		
+MVI A,FFH 		 
+
+LOOP_A:  	MOV M,A 		
+INX H 			 
+DCR A 		  
+CPI 00H 		
+JNZ LOOP_A 	
+MOV M,A 		
+
+
+PART_B: 	LXI H,09FFH 		
+LXI D,0000H 		
+
+NXT_NUM: 	MOV A,M 		
+MVI B,09H 	  
+
+NXT_BIT: 	DCR B 		
+JZ MEM 		
+	RRC 			 
+JC NXT_BIT 		 
+INX D 			
+JMP NXT_BIT 	
+
+MEM: 		DCR L 		 
+JNZ NXT_NUM	
+ 
+
+
+PART_C: 	MVI C,00H 	
+LXI H,09FFH 	
+
+COMPARE: 	MOV A,M 		
+CPI 70H 		
+JZ COUNT 		 
+JNC NXT_NUM_C 	
+CPI 20H 		
+JNC COUNT 		
+JMP NXT_NUM_C 	
+
+COUNT: 	INR C 			
+
+NXT_NUM_C:  DCR L 		
+JNZ COMPARE 	
+
+XCHG
+SHLD 0AAAH		
+MOV A,C
+STA 0AACH		
+
+END

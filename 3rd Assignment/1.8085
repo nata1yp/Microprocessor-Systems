@@ -1,0 +1,51 @@
+START:			IN 10H
+			MVI A,0DH
+			SIM
+			EI	
+			
+WAIT:			JMP WAIT   
+
+INTR_ROUTINE:		EI
+			MVI A,10H		
+			STA 0B02H		
+			STA 0B03H		
+			STA 0B04H
+			STA 0B05H
+			LXI B,01F4H         
+
+INITDEC:		MVI A,06H
+			STA 0B01H
+
+INITMON: 		MVI A,0AH
+			STA 0B00H
+
+DEC: 			LDA 0B01H
+			DCR A
+			STA 0B01H
+		
+MON:			LDA 0B00H
+			DCR A
+			STA 0B00H
+			
+			LXI D,0B00H
+			CALL STDM
+			CALL DCD
+			CALL DELB
+				
+			
+LIGHT:			MVI A,00H  
+			STA 3000H
+			CALL DELB  	
+
+			MVI A,FFH  	
+			STA 3000H
+			CALL DELB  
+
+			LDA 0B00H
+			CPI 00H
+			JNZ MON
+			LDA 0B01H
+			CPI 00H
+			JNZ INITMON	
+			JMP WAIT 
+END	

@@ -1,0 +1,58 @@
+		IN 10H		
+START:	 LDA 2000H
+			MOV B,A	
+			MVI D,00H
+
+GATE_1:	RLC			 
+		ANA B		
+		RLC			 		 
+		JNC GATE_2		 
+		MVI D,08H		
+
+GATE_2: MOV A,B		 
+		RLC			 
+		ORA B			 
+		RLC			
+		RLC			 
+		RLC 	 
+		MVI E,00H		 
+		JNC XOR	 
+		MVI E,0CH		
+
+XOR: 	MOV A,D
+		XRA E			
+		MOV D,A		 
+
+GATE_3: MOV A,B		
+		RRC			
+		ANA B		
+		RRC			 
+		RRC			  
+		RRC 
+		MVI E,00H		 
+		JNC EXIT_3	
+		MVI E,02H		
+
+EXIT_3: 	MOV A,D		
+			ORA E			
+			MOV D,A		
+
+GATE_4: MOV A,B		 
+		RRC			 
+		ORA B						  
+		RRC			 
+		MVI E,00H		 
+		JNC EXIT_4 
+		MVI E,01H		 
+
+EXIT_4: 	MOV A,D		  
+			ORA E			  	 
+
+
+LIGHTS: CMA			
+		STA 3000H		 
+		JMP START		
+
+END 
+
+ 
